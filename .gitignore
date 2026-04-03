@@ -205,3 +205,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# --- My Custom Ignore Rules ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
