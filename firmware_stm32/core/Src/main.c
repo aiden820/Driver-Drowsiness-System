@@ -1,0 +1,1 @@
+// git branch => git checkout -b feature/stm32-socket-server / git branch 쳐보면서 main인지 확인하기
