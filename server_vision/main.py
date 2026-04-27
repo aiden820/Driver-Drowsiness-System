@@ -2,6 +2,8 @@ import cv2
 import math
 import time
 import mediapipe as mp
+from socket_server import SocketServer 
+import threading 
 
 # ── MediaPipe 초기화 (버전 호환 방어 코드 포함) ──────────────────────────
 try:
@@ -79,6 +81,9 @@ def main():
     pitch_start_time       = None
     face_missing_start_time = None
     prev_status            = "Awake"
+
+    socket_server = SocketServer()
+    threading.Thread(target=socket_server.wait_for_client, daemon=True).start()
 
     cap = open_camera()
 
@@ -173,6 +178,7 @@ def main():
 
             if alert_key and prev_status != status_text:
                 trigger_alert(alert_key)
+                socket_server.send_status(status_text)
             prev_status = status_text
 
             # ── 경고 카운터 & FPS 표시 ────────────────────────────────
@@ -191,6 +197,7 @@ def main():
 
     cap.release()
     cv2.destroyAllWindows()
+    socket_server.close()  
 
     # 종료 후 간단 리포트
     print("\n── 세션 경고 요약 ──────────────────")
